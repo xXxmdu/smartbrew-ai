@@ -1,0 +1,9 @@
+# SmartBrew AI requires NO third-party packages.
+# The prototype runs on the Python 3.10+ standard library alone, so it can be
+# evaluated on a clean machine with no installation step.
+#
+# Optional only: installing qrcode upgrades the on-screen receipt from a
+# labelled placeholder to a real scannable QR symbol. Everything works without
+# it; see "Known simplifications" in README.md.
+#
+# qrcode>=7.4
