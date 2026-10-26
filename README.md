@@ -96,7 +96,7 @@ If it prints 3.10 or higher, you are ready. There is no build step.
 Clone and enter the repository:
 
 ```bash
-git clone https://github.com/<github-username>/smartbrew-ai.git
+git clone https://github.com/xXxmdu/smartbrew-ai.git
 cd smartbrew-ai
 ```
 
