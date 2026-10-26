@@ -5,9 +5,7 @@ A working prototype of the SmartBrew AI intelligent coffee machine, built for
 Engineering 1**, Mälardalen University, autumn 2026.
 
 **Authors:** Ahmed Al-Baghdadi, Mohsen Alawi (group G11)
-**Built with LLM assistance:** Claude Opus 5 (`claude-opus-5`). See
-[`docs/prompt-log.md`](docs/prompt-log.md) for the prompt strategy and
-transcript, as required by Task A.
+**Built with LLM assistance:** Claude Opus 5 (`claude-opus-5`).
 
 ---
 
@@ -26,18 +24,18 @@ real working code with a test for each rule.
 
 ### The ten implemented features
 
-| # | Feature | Requirements | Backlog item |
-|---|---|---|---|
-| 1 | Accounts, login by password or NFC tap, preference profiles | FR-01…FR-04 | PB-06 |
-| 2 | Menu browsing: categories, price, ingredients, allergens, nutrition | FR-05, FR-06 | PB-01 |
-| 3 | Real-time customisation with live price recalculation | FR-07, FR-08 | PB-04 |
-| 4 | Ingredient stock, consumption on brewing, availability blocking | FR-09, FR-27 | PB-02, PB-05 |
-| 5 | Payment (4 methods), decline handling, offline mode, deferred settlement | FR-18, FR-19, NFR-02, NFR-03 | PB-03, PB-14 |
-| 6 | Recommendation engine: history, time of day, weather, mood | FR-13…FR-16, NFR-01, NFR-10 | PB-12, PB-15 |
-| 7 | **Loyalty points: earn and redeem** *(our own feature)* | FR-28, FR-29 | PB-11 |
-| 8 | Saved recipes and one-touch reorder | FR-10…FR-12 | PB-10 |
-| 9 | Receipts by QR or e-mail, and the transaction log | FR-20, FR-21, NFR-06 | PB-07, PB-13 |
-| 10 | Technician mode: PIN access, refills, waste bins, faults, event log | FR-22…FR-26, NFR-05 | PB-08, PB-09 |
+| #   | Feature                                                                  | Requirements                 | Backlog item |
+| --- | ------------------------------------------------------------------------ | ---------------------------- | ------------ |
+| 1   | Accounts, login by password or NFC tap, preference profiles              | FR-01…FR-04                  | PB-06        |
+| 2   | Menu browsing: categories, price, ingredients, allergens, nutrition      | FR-05, FR-06                 | PB-01        |
+| 3   | Real-time customisation with live price recalculation                    | FR-07, FR-08                 | PB-04        |
+| 4   | Ingredient stock, consumption on brewing, availability blocking          | FR-09, FR-27                 | PB-02, PB-05 |
+| 5   | Payment (4 methods), decline handling, offline mode, deferred settlement | FR-18, FR-19, NFR-02, NFR-03 | PB-03, PB-14 |
+| 6   | Recommendation engine: history, time of day, weather, mood               | FR-13…FR-16, NFR-01, NFR-10  | PB-12, PB-15 |
+| 7   | **Loyalty points: earn and redeem** _(our own feature)_                  | FR-28, FR-29                 | PB-11        |
+| 8   | Saved recipes and one-touch reorder                                      | FR-10…FR-12                  | PB-10        |
+| 9   | Receipts by QR or e-mail, and the transaction log                        | FR-20, FR-21, NFR-06         | PB-07, PB-13 |
+| 10  | Technician mode: PIN access, refills, waste bins, faults, event log      | FR-22…FR-26, NFR-05          | PB-08, PB-09 |
 
 Requirement IDs refer to the Task A report submitted on Canvas.
 
@@ -73,11 +71,11 @@ terminal.
 
 ## 2. Environment and prerequisites
 
-* **Python 3.10 or newer.** Checked on 3.11 (Linux) and 3.12 (Windows).
-* **No third-party packages are required.** The whole prototype runs on the
+- **Python 3.10 or newer.** Checked on 3.11 (Linux) and 3.12 (Windows).
+- **No third-party packages are required.** The whole prototype runs on the
   standard library, so there is nothing to install and nothing to go wrong with
   version mismatches on the evaluation machine.
-* `requirements.txt` lists one *optional* package, `qrcode`, which upgrades the
+- `requirements.txt` lists one _optional_ package, `qrcode`, which upgrades the
   on-screen receipt from a labelled placeholder to a real scannable QR symbol.
   Everything works without it.
 
@@ -153,29 +151,29 @@ python3 main.py /tmp/scratch-state.json
 
 **Demonstration credentials, all fake:**
 
-| Thing | Value |
-|---|---|
-| Technician PIN | `4242` |
-| Card that works | `5412751234564242` (any reference not ending `0000`) |
-| Card that is declined | `5412751234560000` (any reference ending `0000`) |
-| Prepaid employee card | `EMP-00731`, pre-loaded with 500 SEK |
+| Thing                 | Value                                                |
+| --------------------- | ---------------------------------------------------- |
+| Technician PIN        | `4242`                                               |
+| Card that works       | `5412751234564242` (any reference not ending `0000`) |
+| Card that is declined | `5412751234560000` (any reference ending `0000`)     |
+| Prepaid employee card | `EMP-00731`, pre-loaded with 500 SEK                 |
 
 ### 3.4 Walking the ten features by hand
 
 Each row below is a complete path through the interactive simulator.
 
-| # | Feature | What to do | What you should see |
-|---|---|---|---|
-| 1 | Accounts and profiles | `5` → `1`, register; `5` → `4`, set oat / 3 / large; `5` → `5` log out; `5` → `3` tap your NFC id | Logged back in by card; a new order starts pre-filled with oat, strength 3, large |
-| 2 | Menu | `1` | Drinks grouped by category with price, kcal and allergens |
-| 3 | Customisation | `3` → `latte` → change milk, strength, size, syrup; then `6` | Price updates after every change; option 6 itemises how it was reached |
-| 4 | Stock and availability | `7` → PIN `4242` → `1` to see levels; exit; buy several lattes; `1` | Milk level falls with each drink; once at threshold the drink is listed `UNAVAILABLE` |
-| 5 | Payments | `3`, buy with card ending `0000`; then `8` to go offline and buy again; `8` to come back online | Declined card brews nothing; offline purchase is served and marked pending; reconnecting settles it once |
-| 6 | Recommendations | `2`, answer `y`, choose `tired` | Menu reordered with a score and a plain-English reason per drink; Flat White rises on a tired reading |
-| 7 | **Loyalty points** | Buy until the balance passes 100, then buy again and accept the offer | Points accumulate; the discount is applied; the charged amount drops by 10 SEK per 100 points |
-| 8 | Saved recipes | During `3` answer `y` to save, name it; log out and in; `4` | The recipe survives the logout and reorders in one step |
-| 9 | Receipts and log | Buy, choose `qr`; buy again, choose `email`; then `6` | A receipt with a scannable payload, an addressed e-mail, and a log showing only masked card references |
-| 10 | Technician mode | `7` → wrong PIN, then `4242` → `1` dashboard, `2` refill, `6` raise `GRINDER_JAM`, `4` event log, `5` clear it | Wrong PIN is refused and logged; a raised fault takes the machine out of service until cleared |
+| #   | Feature                | What to do                                                                                                     | What you should see                                                                                      |
+| --- | ---------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1   | Accounts and profiles  | `5` → `1`, register; `5` → `4`, set oat / 3 / large; `5` → `5` log out; `5` → `3` tap your NFC id              | Logged back in by card; a new order starts pre-filled with oat, strength 3, large                        |
+| 2   | Menu                   | `1`                                                                                                            | Drinks grouped by category with price, kcal and allergens                                                |
+| 3   | Customisation          | `3` → `latte` → change milk, strength, size, syrup; then `6`                                                   | Price updates after every change; option 6 itemises how it was reached                                   |
+| 4   | Stock and availability | `7` → PIN `4242` → `1` to see levels; exit; buy several lattes; `1`                                            | Milk level falls with each drink; once at threshold the drink is listed `UNAVAILABLE`                    |
+| 5   | Payments               | `3`, buy with card ending `0000`; then `8` to go offline and buy again; `8` to come back online                | Declined card brews nothing; offline purchase is served and marked pending; reconnecting settles it once |
+| 6   | Recommendations        | `2`, answer `y`, choose `tired`                                                                                | Menu reordered with a score and a plain-English reason per drink; Flat White rises on a tired reading    |
+| 7   | **Loyalty points**     | Buy until the balance passes 100, then buy again and accept the offer                                          | Points accumulate; the discount is applied; the charged amount drops by 10 SEK per 100 points            |
+| 8   | Saved recipes          | During `3` answer `y` to save, name it; log out and in; `4`                                                    | The recipe survives the logout and reorders in one step                                                  |
+| 9   | Receipts and log       | Buy, choose `qr`; buy again, choose `email`; then `6`                                                          | A receipt with a scannable payload, an addressed e-mail, and a log showing only masked card references   |
+| 10  | Technician mode        | `7` → wrong PIN, then `4242` → `1` dashboard, `2` refill, `6` raise `GRINDER_JAM`, `4` event log, `5` clear it | Wrong PIN is refused and logged; a raised fault takes the machine out of service until cleared           |
 
 The scripted equivalent of this whole table is `python3 demo.py`.
 
