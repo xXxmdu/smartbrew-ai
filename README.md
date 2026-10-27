@@ -1,11 +1,11 @@
 # SmartBrew AI
 
 A working prototype of the SmartBrew AI intelligent coffee machine, built for
-**Lab 3 — Code management with Generative AI**, course **DVA332 Software
+**Lab 3 Code management with Generative AI, course DVA332 Software
 Engineering 1**, Mälardalen University, autumn 2026.
 
 **Authors:** Ahmed Al-Baghdadi, Mohsen Alawi (group G11)
-**Built with LLM assistance:** Claude Opus 5 (`claude-opus-5`).
+**Built with LLM assistance:** Claude Opus 5 (claude opus 5).
 
 ---
 
@@ -17,9 +17,9 @@ history and the weather, takes contactless payment, and keeps a technician
 informed about refills and faults.
 
 This repository implements **ten features** from the requirements elicited in
-Task A, as a Python command-line application. The terminal stands in for the
-machine's touchscreen; everything behind the screen — pricing, stock, payment
-authorisation, recommendation scoring, loyalty accounting, fault handling — is
+Task A, as a Python command line application. The terminal stands in for the
+machine's touchscreen; everything behind the screen pricing, stock, payment
+authorisation, recommendation scoring, loyalty accounting, fault handling is
 real working code with a test for each rule.
 
 ### The ten implemented features
@@ -32,9 +32,9 @@ real working code with a test for each rule.
 | 4   | Ingredient stock, consumption on brewing, availability blocking          | FR-09, FR-27                 | PB-02, PB-05 |
 | 5   | Payment (4 methods), decline handling, offline mode, deferred settlement | FR-18, FR-19, NFR-02, NFR-03 | PB-03, PB-14 |
 | 6   | Recommendation engine: history, time of day, weather, mood               | FR-13…FR-16, NFR-01, NFR-10  | PB-12, PB-15 |
-| 7   | **Loyalty points: earn and redeem** _(our own feature)_                  | FR-28, FR-29                 | PB-11        |
-| 8   | Saved recipes and one-touch reorder                                      | FR-10…FR-12                  | PB-10        |
-| 9   | Receipts by QR or e-mail, and the transaction log                        | FR-20, FR-21, NFR-06         | PB-07, PB-13 |
+| 7   | **Loyalty points: earn and redeem (our own feature)                      | FR-28, FR-29                 | PB-11        |
+| 8   | Saved recipes and one touch reorder                                      | FR-10…FR-12                  | PB-10        |
+| 9   | Receipts by QR or email, and the transaction log                         | FR-20, FR-21, NFR-06         | PB-07, PB-13 |
 | 10  | Technician mode: PIN access, refills, waste bins, faults, event log      | FR-22…FR-26, NFR-05          | PB-08, PB-09 |
 
 Requirement IDs refer to the Task A report submitted on Canvas.
@@ -52,9 +52,9 @@ smartbrew/
   accounts.py           registration, password/NFC login, profiles, recipes
   payments.py           authorisation, declines, offline queue, settlement
   loyalty.py            points earned and redeemed
-  mood.py               in-memory mood inference from a camera frame
+  mood.py               in memory mood inference from a camera frame
   recommender.py        scoring and menu reordering, weather provider
-  receipts.py           QR and e-mail receipt rendering
+  receipts.py           QR and email receipt rendering
   faults.py             fault codes and the diagnostic event log
   machine.py            the facade that orchestrates all of the above
   storage.py            atomic JSON persistence
@@ -71,11 +71,11 @@ terminal.
 
 ## 2. Environment and prerequisites
 
-- **Python 3.10 or newer.** Checked on 3.11 (Linux) and 3.12 (Windows).
-- **No third-party packages are required.** The whole prototype runs on the
+- **Python 3.10 or newer. Checked on 3.11 (Linux) and 3.12 (Windows).
+- **No third party packages are required. The whole prototype runs on the
   standard library, so there is nothing to install and nothing to go wrong with
   version mismatches on the evaluation machine.
-- `requirements.txt` lists one _optional_ package, `qrcode`, which upgrades the
+- `requirements.txt` lists one optional package, `qrcode`, which upgrades the
   on-screen receipt from a labelled placeholder to a real scannable QR symbol.
   Everything works without it.
 
@@ -121,7 +121,7 @@ python3 demo.py
 ```
 
 This runs every feature in order against a real machine and prints the
-observable result of each step — prices changing, stock dropping, payments
+observable result of each step prices changing, stock dropping, payments
 declining, points being redeemed, faults halting service. Nothing is printed
 that the running system did not actually produce.
 
@@ -149,7 +149,7 @@ file, or point the program somewhere else:
 python3 main.py /tmp/scratch-state.json
 ```
 
-**Demonstration credentials, all fake:**
+Demonstration credentials, all fake:
 
 | Thing                 | Value                                                |
 | --------------------- | ---------------------------------------------------- |
@@ -181,7 +181,7 @@ The scripted equivalent of this whole table is `python3 demo.py`.
 
 ## 4. Design notes
 
-**Payment is authorised before ingredients are consumed.** A declined card
+Payment is authorised before ingredients are consumed. A declined card
 therefore leaves the stock untouched and no transaction in the log. There is a
 test for this (`test_declined_card_leaves_drink_unbrewed`); getting the order
 wrong is the obvious way to give away free coffee.
@@ -192,15 +192,15 @@ derives a label and a confidence, drops its reference and returns a
 frames creates no file on disk. This implements the one hard privacy constraint
 in the system description.
 
-**Points cannot fund themselves.** Loyalty points are earned on the amount
+Points cannot fund themselves. Loyalty points are earned on the amount
 actually charged, not on the price before the discount, so redeeming never
 regenerates the points it consumed.
 
-**Offline settlement is idempotent.** Queued transaction ids are removed as they
+Offline settlement is idempotent. Queued transaction ids are removed as they
 settle, so calling settlement twice cannot charge a customer twice.
 
-**Passwords and the technician PIN are stored as PBKDF2-HMAC-SHA256 hashes**
-with per-record salts. The state file never contains either in clear text, and
+Passwords and the technician PIN are stored as PBKDF2-HMAC-SHA256 hashes
+with per record salts. The state file never contains either in clear text, and
 there are tests asserting that.
 
 ---
@@ -210,24 +210,24 @@ there are tests asserting that.
 This is a course prototype, and these are the places where it deliberately
 stops short. They are listed so nothing here is mistaken for production code.
 
-1. **The mood classifier is simulated.** A real machine would run a vision
+1. The mood classifier is simulated. A real machine would run a vision
    model on its embedded compute module. The classifier here is a deterministic
-   function of the frame bytes. What is implemented for real is the data-handling
-   contract around it — in-memory only, nothing written, nothing transmitted —
+   function of the frame bytes. What is implemented for real is the data handling
+   contract around it in memory only, nothing written, nothing transmitted —
    which is the part the requirements constrain.
-2. **The payment terminal is simulated.** No acquirer is contacted. The decline
+2. The payment terminal is simulated. No acquirer is contacted. The decline
    rule (any card reference ending `0000`) exists so the failure path can be
    demonstrated deterministically.
-3. **The weather provider returns a configured value** rather than calling a
+3. The weather provider returns a configured value rather than calling a
    weather API, so the offline fallback can be demonstrated without a network.
-4. **E-mail receipts are rendered, not sent.** The program prints the message it
+4. Email receipts are rendered, not sent. The program prints the message it
    would send.
-5. **QR rendering falls back to a labelled placeholder** when the optional
+5. QR rendering falls back to a labelled placeholder when the optional
    `qrcode` package is absent. Install it with `pip install qrcode` for a real
    symbol.
-6. **The natural-language ordering agent (FR-17) is not implemented.** The
+6. The natural language ordering agent (FR-17) is not implemented. The
    system description marks it optional and modular, and Task A estimated it at
-   40 story points — larger than the first three sprints combined. The reasoning
+   40 story points larger than the first three sprints combined. The reasoning
    is recorded as rejection R3 in the Task A report.
 
 ---
